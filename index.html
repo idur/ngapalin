@@ -59,10 +59,24 @@
                     <div class="ayah-display">
                         <div class="ayah-arabic" id="ayah-arabic"></div>
                         <div class="ayah-translation" id="ayah-translation"></div>
+                        <div class="ayah-toggle-container" id="ayah-toggle-container" style="display: none;">
+                            <button id="toggleAyahBtn" class="btn btn-outline btn-sm">👁️ Lihat Ayat</button>
+                        </div>
                     </div>
 
                     <div class="memorization-controls">
                         <button id="hafalBtn" class="btn btn-success" style="display: none;">🤲 Alhamdulillah Sudah Hafal</button>
+                        
+                        <div class="restart-options" id="restart-options" style="display: none;">
+                            <div class="restart-message">
+                                <p>Belum hafal sepenuhnya? Pilih opsi untuk mengulang:</p>
+                            </div>
+                            <div class="restart-buttons">
+                                <button id="restartFromBeginning" class="btn btn-outline">🔄 Ulang dari Awal (20x)</button>
+                                <button id="restartFromSecondPhase" class="btn btn-outline">⏩ Ulang Fase Kedua (10x)</button>
+                            </div>
+                        </div>
+                        
                         <div class="navigation-buttons">
                             <button id="prevAyahBtn" class="btn btn-secondary">← Sebelumnya</button>
                             <button id="nextAyahBtn" class="btn btn-secondary">Selanjutnya →</button>
