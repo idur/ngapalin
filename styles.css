@@ -955,6 +955,40 @@ select:focus-visible {
     margin-top: 1rem;
 }
 
+/* Footer Styles */
+.app-footer {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 3px solid #fbbf24;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content p {
+    margin: 5px 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.footer-content a {
+    color: #fbbf24;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.footer-content a:hover {
+    color: #f59e0b;
+    text-decoration: underline;
+}
+
 /* Responsive Design for Panduan */
 @media (max-width: 768px) {
     .panduan-container {
@@ -973,5 +1007,14 @@ select:focus-visible {
     .target-number {
         margin-right: 0;
         margin-bottom: 0.5rem;
+    }
+    
+    .app-footer {
+        margin-top: 20px;
+        padding: 15px 0;
+    }
+    
+    .footer-content p {
+        font-size: 13px;
     }
 }
