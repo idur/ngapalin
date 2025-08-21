@@ -16,6 +16,22 @@ class NgapalinApp {
         this.init();
     }
 
+    removeEventListeners() {
+        // Clone and replace elements to remove all event listeners
+        const prevBtn = document.getElementById('prevAyahBtn');
+        const nextBtn = document.getElementById('nextAyahBtn');
+        
+        if (prevBtn) {
+            const newPrevBtn = prevBtn.cloneNode(true);
+            prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+        }
+        
+        if (nextBtn) {
+            const newNextBtn = nextBtn.cloneNode(true);
+            nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+        }
+    }
+
     init() {
         console.log('App: Initializing application...');
         this.setupEventListeners();
@@ -28,6 +44,9 @@ class NgapalinApp {
     }
 
     setupEventListeners() {
+        // Remove existing event listeners first to prevent duplicates
+        this.removeEventListeners();
+        
         // Tab navigation
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
@@ -49,10 +68,26 @@ class NgapalinApp {
         // Setup event listeners
         document.getElementById('tikrarBtn')?.addEventListener('click', () => this.nextTikrar());
 
-
-        document.getElementById('prevAyahBtn')?.addEventListener('click', () => this.previousAyah());
-        document.getElementById('nextAyahBtn')?.addEventListener('click', () => this.nextAyah());
-        document.getElementById('hafalBtn')?.addEventListener('click', () => this.finishAyah());
+        // Navigation buttons with event prevention
+        const prevBtn = document.getElementById('prevAyahBtn');
+        const nextBtn = document.getElementById('nextAyahBtn');
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.previousAyah();
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.nextAyah();
+            });
+        }
+        // hafalBtn removed - direct to restart options after tikrar completion
         document.getElementById('toggleAyahBtn')?.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -62,6 +97,7 @@ class NgapalinApp {
         // Restart options
         document.getElementById('restartFromBeginning')?.addEventListener('click', () => this.restartFromBeginning());
         document.getElementById('restartFromSecondPhase')?.addEventListener('click', () => this.restartFromSecondPhase());
+        document.getElementById('confirmHafalBtn')?.addEventListener('click', () => this.confirmHafal());
 
         // Murajaah controls
         document.getElementById('daily-murajaah').addEventListener('click', () => {
@@ -194,8 +230,7 @@ class NgapalinApp {
             };
             this.ayahToggleVisible = false;
             
-            // Hide hafal button and restart options
-            document.getElementById('hafalBtn').style.display = 'none';
+            // Hide restart options
             document.getElementById('restart-options').style.display = 'none';
         }
 
@@ -261,15 +296,12 @@ class NgapalinApp {
         
         const isLastTikrar = this.tikrarState.current === this.tikrarState.total && this.tikrarState.mode === 'tanpa_melihat';
         
-        // Show restart options or hafal button
-        const hafalBtn = document.getElementById('hafalBtn');
+        // Show restart options when tikrar is completed
         const restartOptions = document.getElementById('restart-options');
         
         if (isLastTikrar) {
-            hafalBtn.style.display = 'none';
             restartOptions.style.display = 'block';
         } else {
-            hafalBtn.style.display = 'block';
             restartOptions.style.display = 'none';
         }
 
@@ -297,11 +329,9 @@ class NgapalinApp {
             this.tikrarState.mode = 'tanpa_melihat';
             this.tikrarState.current = 1;
             this.tikrarState.total = 10;
-        } else {
-            // Selesai 10x tanpa melihat - tampilkan tombol hafal
-            document.getElementById('hafalBtn').style.display = 'block';
-            return;
         }
+        // Tidak perlu increment lagi setelah 10x tanpa melihat
+        // isLastTikrar akan mendeteksi kondisi current === total && mode === 'tanpa_melihat'
         
         this.updateHafalanDisplay();
         this.saveCurrentState(); // Simpan state setelah update tikrar
@@ -310,10 +340,11 @@ class NgapalinApp {
     previousAyah() {
         if (!this.currentHafalan) return;
         
-        // Cek apakah tikrar belum selesai
-        const isInProgress = this.tikrarState && 
-            (this.tikrarState.current < this.tikrarState.total || 
-             this.tikrarState.mode === 'melihat');
+        // Cek apakah tikrar belum selesai sepenuhnya
+        // Tikrar dianggap selesai jika: current === total DAN mode === 'tanpa_melihat'
+        const isCompleted = this.tikrarState && 
+            (this.tikrarState.current === this.tikrarState.total && this.tikrarState.mode === 'tanpa_melihat');
+        const isInProgress = this.tikrarState && !isCompleted;
         
         if (isInProgress) {
             const confirmed = confirm(
@@ -331,10 +362,11 @@ class NgapalinApp {
     nextAyah() {
         if (!this.currentHafalan) return;
         
-        // Cek apakah tikrar belum selesai
-        const isInProgress = this.tikrarState && 
-            (this.tikrarState.current < this.tikrarState.total || 
-             this.tikrarState.mode === 'melihat');
+        // Cek apakah tikrar belum selesai sepenuhnya
+        // Tikrar dianggap selesai jika: current === total DAN mode === 'tanpa_melihat'
+        const isCompleted = this.tikrarState && 
+            (this.tikrarState.current === this.tikrarState.total && this.tikrarState.mode === 'tanpa_melihat');
+        const isInProgress = this.tikrarState && !isCompleted;
         
         if (isInProgress) {
             const confirmed = confirm(
@@ -350,7 +382,9 @@ class NgapalinApp {
         }
     }
 
-    finishAyah() {
+    // finishAyah method removed - restart options now show directly after tikrar completion
+    
+    confirmHafal() {
         // Prevent multiple execution
         if (this.isFinishing) {
             return;
@@ -470,9 +504,9 @@ class NgapalinApp {
                     this.showHafalanContainer();
                     this.updateHafalanDisplay();
                     
-                    // Show hafal button if completed
+                    // Show restart options if completed
                     if (mode === 'tanpa_melihat' && tikrarCount >= 10) {
-                        document.getElementById('hafalBtn').style.display = 'block';
+                        document.getElementById('restart-options').style.display = 'block';
                     }
                     
                     console.log('State restored successfully');
