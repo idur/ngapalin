@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngapalin - Hafalan Qur'an dengan Metode At-Tikrar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-title">Ngapalin</h1>
+            <p class="app-subtitle">Hafalan Qur'an Juz 30 dengan Metode At-Tikrar</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="hafalan">📖 Hafalan</button>
+            <button class="nav-tab" data-tab="murajaah">🔄 Murajaah</button>
+            <button class="nav-tab" data-tab="progress">Progress</button>
+            <button class="nav-tab" data-tab="panduan">📚 Panduan</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hafalan Tab -->
+            <div class="tab-content active" id="hafalan-tab">
+                <div class="surah-selector">
+                    <label for="surah-select">Pilih Surat:</label>
+                    <select id="surah-select">
+                        <option value="">-- Pilih Surat --</option>
+                    </select>
+                </div>
+
+                <div class="ayah-selector" style="display: none;">
+                    <label for="ayah-select">Pilih Ayat:</label>
+                    <select id="ayah-select">
+                        <option value="">-- Pilih Ayat --</option>
+                    </select>
+                </div>
+
+                <div class="hafalan-container" style="display: none;">
+                    <div class="hafalan-header">
+                        <h3 id="current-surah-ayah"></h3>
+                        <div class="tikrar-counter">
+                        <div class="counter-display">
+                            <span class="counter-label">Tikrar:</span>
+                            <span id="tikrarCount">0</span> / <span id="tikrarTarget">20</span>
+                            <button id="tikrarBtn" class="btn-tikrar">+1</button>
+                        </div>
+                        <div class="counter-type" id="counterType">Membaca dengan melihat</div>
+                    </div>
+                    </div>
+
+                    <div class="ayah-display">
+                        <div class="ayah-arabic" id="ayah-arabic"></div>
+                        <div class="ayah-translation" id="ayah-translation"></div>
+                    </div>
+
+                    <div class="memorization-controls">
+                        <button id="hafalBtn" class="btn btn-success" style="display: none;">🤲 Alhamdulillah Sudah Hafal</button>
+                        <div class="navigation-buttons">
+                            <button id="prevAyahBtn" class="btn btn-secondary">← Sebelumnya</button>
+                            <button id="nextAyahBtn" class="btn btn-secondary">Selanjutnya →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Murajaah Tab -->
+            <div class="tab-content" id="murajaah-tab">
+                <div class="murajaah-options">
+                    <button class="btn btn-outline" id="daily-murajaah">📅 Murajaah Harian</button>
+                    <button class="btn btn-outline" id="weekly-murajaah">📊 Murajaah Mingguan</button>
+                </div>
+
+                <div class="murajaah-container" style="display: none;">
+                    <div class="murajaah-header">
+                        <h3 id="murajaah-title"></h3>
+                        <div class="tikrar-counter">
+                            <span id="murajaah-mode">Membaca dengan Melihat</span>
+                            <span id="murajaah-count">1/20</span>
+                        </div>
+                    </div>
+
+                    <div class="ayah-display">
+                        <div class="ayah-arabic" id="murajaah-arabic"></div>
+                        <div class="ayah-translation" id="murajaah-translation"></div>
+                    </div>
+
+                    <div class="hafalan-controls">
+                        <button id="prev-murajaah" class="btn btn-secondary">← Sebelumnya</button>
+                        <button id="next-murajaah" class="btn btn-primary">Selanjutnya →</button>
+                        <button id="finish-murajaah" class="btn btn-success" style="display: none;">Selesai Murajaah</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Tab -->
+            <div class="tab-content" id="progress-tab">
+                <div class="progress-summary">
+                    <h3>Ringkasan Progress</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-memorized">0</div>
+                            <div class="stat-label">Ayat Dihafal</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="current-streak">0</div>
+                            <div class="stat-label">Hari Berturut</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-tikrar">0</div>
+                            <div class="stat-label">Total Tikrar</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-list">
+                    <h4>Daftar Ayat yang Dihafal</h4>
+                    <div id="memorized-list"></div>
+                </div>
+            </div>
+
+            <!-- Panduan Tab -->
+            <div class="tab-content" id="panduan-tab">
+                <div class="panduan-container">
+                    <h3>Panduan <br>Menghafal Al-Qur'an <br> dengan Metode Tikrar</h3>
+                    
+                    <div class="panduan-section">
+                        <h4>🎯 Apa itu Metode Tikrar?</h4>
+                        <p>Tikrar adalah metode menghafal Al-Qur'an dengan cara <strong>pengulangan yang terstruktur dan konsisten</strong>. Kata "tikrar" berasal dari bahasa Arab yang berarti "pengulangan". Metode ini terbukti sangat efektif untuk memperkuat hafalan dan menjaga kelancaran bacaan.</p>
+                    </div>
+
+                    <div class="panduan-section">
+                        <h4>🔄 Cara Kerja Metode Tikrar</h4>
+                        <ol>
+                            <li><strong>Baca ayat dengan tartil</strong> - Bacalah ayat yang akan dihafal dengan perlahan dan benar</li>
+                            <li><strong>Ulangi berkali-kali</strong> - Lakukan pengulangan sesuai target tikrar</li>
+                            <li><strong>Hafal tanpa melihat</strong> - Setelah tikrar selesai, coba hafal tanpa melihat ayat</li>
+                            <li><strong>Perbaiki kesalahan</strong> - Jika ada kesalahan, kembali ke ayat dan ulangi proses</li>
+                        </ol>
+                    </div>
+
+                    <div class="panduan-section">
+                        <h4>📱 Cara Menggunakan Aplikasi Ini</h4>
+                        
+                        <div class="panduan-subsection">
+                            <h5>Tab Hafalan:</h5>
+                            <ul>
+                                <li>Pilih surah dan ayat yang ingin dihafal</li>
+                                <li>Gunakan counter tikrar untuk menghitung pengulangan</li>
+                                <li>Klik "+" setiap kali selesai membaca ayat</li>
+                                <li>Jika sudah melakukan 20x pengulangan dengan melihat ayat dan 10x tanpa melihat ayat, maka akan ada tombol "Alhamdulillah Sudah Hafal" yang bisa di Klik</li>
+                                <li>Ayat yang sudah di hafal akan masuk ke dalam daftar ayat yang sudah dihafal</li>
+                                <li>Data yang sudah dihafal akan disimpan di local storage</li>
+                            </ul>
+                        </div>
+
+                        <div class="panduan-subsection">
+                            <h5>Tab Murajaah:</h5>
+                            <ul>
+                                <li><strong>Murajaah Harian:</strong> Ulang hafalan hari ini dan kemarin</li>
+                                <li><strong>Murajaah Mingguan:</strong> Ulang seluruh hafalan dalam seminggu terakhir</li>
+                                <li>Gunakan untuk menjaga hafalan tetap kuat dan lancar</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panduan-section">
+                        <h4>💡 Tips Efektif Menghafal</h4>
+                        <div class="tips-grid">
+                            <div class="tip-item">
+                                <h6>🕐 Waktu Terbaik</h6>
+                                <p>Hafal di waktu subuh atau setelah shalat, saat pikiran masih segar dan tenang.</p>
+                            </div>
+                            <div class="tip-item">
+                                <h6>🎵 Dengarkan murottal</h6>
+                                <p>Dengarkan murottal dengan langgam yang sama untuk membantu mengingat ayat.</p>
+                            </div>
+                            <div class="tip-item">
+                                <h6>📝 Tulis Ayat</h6>
+                                <p>Menulis ayat dengan tangan membantu memperkuat ingatan visual dan motorik.</p>
+                            </div>
+                            <div class="tip-item">
+                                <h6>🤲 Berdoa</h6>
+                                <p>Selalu berdoa sebelum dan sesudah menghafal, minta kemudahan dari Allah SWT.</p>
+                            </div>
+                            <div class="tip-item">
+                                <h6>⏰ Konsisten</h6>
+                                <p>Lebih baik sedikit tapi konsisten daripada banyak tapi tidak teratur.</p>
+                            </div>
+                            <div class="tip-item">
+                                <h6>👥 Setoran</h6>
+                                <p>Setor hafalan ke ustadz atau teman untuk mendapat koreksi dan motivasi.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panduan-section">
+                        <h4>🎯 Target Tikrar yang Disarankan</h4>
+                        <div class="tikrar-targets">
+                            <div class="target-item">
+                                <span class="target-number">20x</span>
+                                <span class="target-desc">Dengan melihat ayat</span>
+                            </div>
+                            <div class="target-item">
+                                <span class="target-number">10x</span>
+                                <span class="target-desc">Tanpa Melihat Ayat</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panduan-section motivation">
+                        <h4>🌟 Motivasi</h4>
+                        <blockquote>
+                            <p>"Dan sesungguhnya telah Kami mudahkan Al-Qur'an untuk pelajaran, maka adakah orang yang mengambil pelajaran?"</p>
+                            <cite>- QS. Al-Qamar: 17</cite>
+                        </blockquote>
+                        <p class="motivation-text">Ingatlah bahwa setiap huruf yang kita baca dari Al-Qur'an bernilai 10 kebaikan. Menghafal Al-Qur'an adalah investasi terbaik untuk dunia dan akhirat. Tetap semangat dan istiqomah! 💪</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="storage.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
