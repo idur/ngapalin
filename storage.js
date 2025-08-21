@@ -152,12 +152,16 @@ class HafalanStorage {
             mode: mode, // 'melihat' atau 'tanpa_melihat'
             timestamp: new Date().toISOString()
         };
-        return this.saveData(data);
+        console.log('Storage: Saving currentProgress:', data.currentProgress);
+        const result = this.saveData(data);
+        console.log('Storage: Save result:', result);
+        return result;
     }
 
     // Mendapatkan progress hafalan saat ini
     getCurrentProgress() {
         const data = this.getData();
+        console.log('Storage: Getting currentProgress:', data.currentProgress);
         return data.currentProgress;
     }
 

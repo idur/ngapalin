@@ -14,10 +14,14 @@ class NgapalinApp {
     }
 
     init() {
+        console.log('App: Initializing application...');
         this.setupEventListeners();
         this.loadSurahOptions();
         this.updateProgressDisplay();
+        console.log('App: About to restore state...');
+        this.restoreState(); // Restore state sebelum menampilkan tab
         this.showTab('hafalan');
+        console.log('App: Initialization complete');
     }
 
     setupEventListeners() {
@@ -41,9 +45,11 @@ class NgapalinApp {
 
         // Setup event listeners
         document.getElementById('tikrarBtn')?.addEventListener('click', () => this.nextTikrar());
+
+
         document.getElementById('prevAyahBtn')?.addEventListener('click', () => this.previousAyah());
         document.getElementById('nextAyahBtn')?.addEventListener('click', () => this.nextAyah());
-        document.getElementById('hafalBtn')?.addEventListener('click', () => this.finishCurrentAyah());
+        document.getElementById('hafalBtn')?.addEventListener('click', () => this.finishAyah());
 
         // Murajaah controls
         document.getElementById('daily-murajaah').addEventListener('click', () => {
@@ -155,6 +161,11 @@ class NgapalinApp {
             return;
         }
 
+        // Check if this is the same ayah as current hafalan
+        const isSameAyah = this.currentHafalan && 
+            this.currentHafalan.surahNumber === surahNumber && 
+            this.currentHafalan.ayahNumber === ayahNumber;
+
         this.currentHafalan = {
             surahNumber,
             ayahNumber,
@@ -162,18 +173,21 @@ class NgapalinApp {
             ayahData
         };
 
-        // Reset tikrar state
-        this.tikrarState = {
-            current: 0,
-            total: 20,
-            mode: 'melihat'
-        };
-        
-        // Hide hafal button
-        document.getElementById('hafalBtn').style.display = 'none';
+        // Only reset tikrar state if it's a different ayah
+        if (!isSameAyah) {
+            this.tikrarState = {
+                current: 1, // Mulai dari 1, bukan 0
+                total: 20,
+                mode: 'melihat'
+            };
+            
+            // Hide hafal button
+            document.getElementById('hafalBtn').style.display = 'none';
+        }
 
         this.showHafalanContainer();
         this.updateHafalanDisplay();
+        this.saveCurrentState(); // Simpan state setelah memulai hafalan
     }
 
     showHafalanContainer() {
@@ -220,12 +234,10 @@ class NgapalinApp {
             translationElement.classList.remove('ayah-hidden');
         }
         
-        // Update button states
-        document.getElementById('prev-tikrar').disabled = this.tikrarState.current === 1 && this.tikrarState.mode === 'melihat';
+
         
         const isLastTikrar = this.tikrarState.current === this.tikrarState.total && this.tikrarState.mode === 'tanpa_melihat';
-        document.getElementById('next-tikrar').style.display = isLastTikrar ? 'none' : 'inline-block';
-        document.getElementById('finish-ayah').style.display = isLastTikrar ? 'inline-block' : 'none';
+
     }
 
     prevTikrar() {
@@ -239,6 +251,7 @@ class NgapalinApp {
         }
         
         this.updateHafalanDisplay();
+        this.saveCurrentState(); // Simpan state setelah update tikrar
     }
 
     nextTikrar() {
@@ -256,10 +269,23 @@ class NgapalinApp {
         }
         
         this.updateHafalanDisplay();
+        this.saveCurrentState(); // Simpan state setelah update tikrar
     }
 
     previousAyah() {
         if (!this.currentHafalan) return;
+        
+        // Cek apakah tikrar belum selesai
+        const isInProgress = this.tikrarState && 
+            (this.tikrarState.current < this.tikrarState.total || 
+             this.tikrarState.mode === 'melihat');
+        
+        if (isInProgress) {
+            const confirmed = confirm(
+                `Anda sedang dalam proses tikrar (${this.tikrarState.current}/${this.tikrarState.total} - ${this.tikrarState.mode === 'melihat' ? 'Membaca dengan melihat' : 'Tanpa melihat'}).\n\nJika pindah ayat, progress tikrar akan hilang. Yakin ingin melanjutkan?`
+            );
+            if (!confirmed) return;
+        }
         
         const { surahNumber, ayahNumber } = this.currentHafalan;
         if (ayahNumber > 1) {
@@ -270,6 +296,18 @@ class NgapalinApp {
     nextAyah() {
         if (!this.currentHafalan) return;
         
+        // Cek apakah tikrar belum selesai
+        const isInProgress = this.tikrarState && 
+            (this.tikrarState.current < this.tikrarState.total || 
+             this.tikrarState.mode === 'melihat');
+        
+        if (isInProgress) {
+            const confirmed = confirm(
+                `Anda sedang dalam proses tikrar (${this.tikrarState.current}/${this.tikrarState.total} - ${this.tikrarState.mode === 'melihat' ? 'Membaca dengan melihat' : 'Tanpa melihat'}).\n\nJika pindah ayat, progress tikrar akan hilang. Yakin ingin melanjutkan?`
+            );
+            if (!confirmed) return;
+        }
+        
         const { surahNumber, ayahNumber, surahData } = this.currentHafalan;
         const ayahList = getAyahList(surahNumber);
         if (ayahNumber < ayahList.length) {
@@ -277,14 +315,13 @@ class NgapalinApp {
         }
     }
 
-    finishCurrentAyah() {
-        this.finishAyah();
-    }
-
     finishAyah() {
         if (!this.currentHafalan) return;
         
         const { surahNumber, ayahNumber } = this.currentHafalan;
+        
+        // Hapus state tersimpan karena ayat sudah selesai
+        hafalanStorage.clearCurrentProgress();
         
         // Simpan ayat yang sudah dihafal
         hafalanStorage.addMemorizedAyah(surahNumber, ayahNumber);
@@ -313,6 +350,90 @@ class NgapalinApp {
         document.querySelector('.ayah-selector').style.display = 'none';
         this.hideHafalanContainer();
         this.currentHafalan = null;
+        hafalanStorage.clearCurrentProgress(); // Hapus state tersimpan
+    }
+
+    // Simpan state hafalan saat ini ke localStorage
+    saveCurrentState() {
+        if (this.currentHafalan && this.tikrarState) {
+            console.log('Saving state:', {
+                surah: this.currentHafalan.surahNumber,
+                ayah: this.currentHafalan.ayahNumber,
+                tikrar: this.tikrarState.current,
+                mode: this.tikrarState.mode
+            });
+            hafalanStorage.setCurrentProgress(
+                this.currentHafalan.surahNumber,
+                this.currentHafalan.ayahNumber,
+                this.tikrarState.current,
+                this.tikrarState.mode
+            );
+        }
+    }
+
+    // Restore state hafalan dari localStorage
+    restoreState() {
+        const savedProgress = hafalanStorage.getCurrentProgress();
+        console.log('Restoring state:', savedProgress);
+        
+        if (savedProgress) {
+            const { surahNumber, ayahNumber, tikrarCount, mode } = savedProgress;
+            
+            // Set dropdown values
+            const surahSelect = document.getElementById('surah-select');
+            const ayahSelect = document.getElementById('ayah-select');
+            
+            surahSelect.value = surahNumber;
+            this.onSurahSelect(surahNumber);
+            
+            // Wait for ayah options to load, then set ayah value
+            setTimeout(() => {
+                ayahSelect.value = ayahNumber;
+                
+                // Start hafalan with saved state
+                const surahData = getSurahData(surahNumber);
+                const ayahData = getAyahData(surahNumber, ayahNumber);
+                
+                if (surahData && ayahData) {
+                    this.currentHafalan = {
+                        surahNumber: parseInt(surahNumber),
+                        ayahNumber: parseInt(ayahNumber),
+                        surahData,
+                        ayahData
+                    };
+                    
+                    // Restore tikrar state
+                    if (mode === 'tanpa_melihat') {
+                        this.tikrarState = {
+                            current: parseInt(tikrarCount),
+                            total: 10,
+                            mode: 'tanpa_melihat'
+                        };
+                    } else {
+                        this.tikrarState = {
+                            current: parseInt(tikrarCount),
+                            total: 20,
+                            mode: 'melihat'
+                        };
+                    }
+                    
+                    // Show hafalan container and update display
+                    this.showHafalanContainer();
+                    this.updateHafalanDisplay();
+                    
+                    // Show hafal button if completed
+                    if (mode === 'tanpa_melihat' && tikrarCount >= 10) {
+                        document.getElementById('hafalBtn').style.display = 'block';
+                    }
+                    
+                    console.log('State restored successfully');
+                } else {
+                    console.error('Failed to get surah/ayah data for restoration');
+                }
+            }, 200); // Increase timeout to 200ms
+        } else {
+            console.log('No saved progress found');
+        }
     }
 
     startDailyMurajaah() {
@@ -513,5 +634,34 @@ class NgapalinApp {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.ngapalinApp = new NgapalinApp();
+    const app = new NgapalinApp();
+    app.init(); // PENTING: Panggil init() untuk menjalankan restoreState
+    window.ngapalinApp = app;
+    
+    // Debug helper - tambahkan ke window untuk testing manual
+    window.debugStorage = {
+        checkLocalStorage: () => {
+            console.log('=== DEBUG LOCALSTORAGE ===');
+            const data = localStorage.getItem('ngapalin-hafalan');
+            console.log('Raw localStorage data:', data);
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    console.log('Parsed data:', parsed);
+                    console.log('Current progress:', parsed.currentProgress);
+                } catch (e) {
+                    console.error('Error parsing localStorage:', e);
+                }
+            } else {
+                console.log('No data found in localStorage');
+            }
+            console.log('========================');
+        },
+        clearStorage: () => {
+            localStorage.removeItem('ngapalin-hafalan');
+            console.log('Storage cleared');
+        }
+    };
+    
+    console.log('Debug helper available: window.debugStorage.checkLocalStorage() and window.debugStorage.clearStorage()');
 });
