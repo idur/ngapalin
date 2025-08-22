@@ -129,16 +129,25 @@ class HafalanStorage {
         });
     }
 
-    // Mendapatkan ayat untuk murajaah mingguan
+    // Mendapatkan ayat untuk murajaah mingguan (Ahad-Sabtu minggu ini)
     getWeeklyReviewAyahs() {
         const data = this.getData();
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
         const today = new Date();
+        
+        // Mencari hari Ahad minggu ini
+        const currentDay = today.getDay(); // 0 = Minggu, 1 = Senin, ..., 6 = Sabtu
+        const sundayOfThisWeek = new Date(today);
+        sundayOfThisWeek.setDate(today.getDate() - currentDay);
+        sundayOfThisWeek.setHours(0, 0, 0, 0);
+        
+        // Mencari hari Sabtu minggu ini
+        const saturdayOfThisWeek = new Date(sundayOfThisWeek);
+        saturdayOfThisWeek.setDate(sundayOfThisWeek.getDate() + 6);
+        saturdayOfThisWeek.setHours(23, 59, 59, 999);
 
         return data.memorizedAyahs.filter(ayah => {
             const memorizedDate = new Date(ayah.dateMemorized);
-            return memorizedDate >= oneWeekAgo && memorizedDate <= today;
+            return memorizedDate >= sundayOfThisWeek && memorizedDate <= saturdayOfThisWeek;
         });
     }
 

@@ -93,22 +93,52 @@
 
                 <div class="murajaah-container" style="display: none;">
                     <div class="murajaah-header">
-                        <h3 id="murajaah-title"></h3>
+                        <h3>Murajaah Mingguan</h3>
+                        <div class="murajaah-info">
+                            <div class="period-info" id="murajaah-period"></div>
+                            <div class="ayah-count-info" id="murajaah-ayah-count"></div>
+                        </div>
+                        <div class="surah-info-box" id="surah-info-box" style="display: none;">
+                            <div class="surah-info-content" id="surah-info-content"></div>
+                        </div>
                         <div class="tikrar-counter">
-                            <span id="murajaah-mode">Membaca dengan Melihat</span>
-                            <span id="murajaah-count">1/20</span>
+                            <div class="counter-display">
+                                <span class="counter-label">Tikrar:</span>
+                                <span id="murajaah-count">1</span> / <span id="murajaah-target">20</span>
+                                <div class="tikrar-navigation">
+                                    <button id="murajaah-tikrar-btn" class="btn-tikrar">+1</button>
+                                </div>
+                            </div>
+                            <div class="counter-type" id="murajaah-mode">Membaca dengan melihat</div>
                         </div>
                     </div>
 
                     <div class="ayah-display">
                         <div class="ayah-arabic" id="murajaah-arabic"></div>
                         <div class="ayah-translation" id="murajaah-translation"></div>
+                        <div class="ayah-toggle-container" id="murajaah-toggle-container">
+                            <button id="toggleMurajaahAyahBtn" class="btn btn-outline btn-sm">👁️ Lihat Ayat</button>
+                            <button id="toggleMurajaahTranslationBtn" class="btn btn-outline btn-sm">📖 Lihat Terjemahan</button>
+                        </div>
                     </div>
 
-                    <div class="hafalan-controls">
-                        <button id="prev-murajaah" class="btn btn-secondary">← Sebelumnya</button>
-                        <button id="next-murajaah" class="btn btn-primary">Selanjutnya →</button>
-                        <button id="finish-murajaah" class="btn btn-success" style="display: none;">Selesai Murajaah</button>
+                    <div class="murajaah-controls">
+                        <div class="murajaah-restart-options" id="murajaah-restart-options" style="display: none;">
+                            <div class="restart-message">
+                                <p>Belum hafal sepenuhnya? Pilih opsi untuk mengulang:</p>
+                            </div>
+                            <div class="restart-buttons">
+                                <button id="murajaahRestartFromBeginning" class="btn btn-outline">🔄 Ulang dari Awal (20x)</button>
+                                <button id="murajaahRestartFromSecondPhase" class="btn btn-outline">⏩ Ulang Fase Kedua (10x)</button>
+                                <button id="confirmMurajaahBtn" class="btn btn-success">✅ Alhamdulillah Saya Hafal</button>
+                            </div>
+                        </div>
+                        
+                        <div class="navigation-buttons">
+                            <button id="prev-murajaah" class="btn btn-secondary">← Sebelumnya</button>
+                            <button id="next-murajaah" class="btn btn-primary">Selanjutnya →</button>
+                            <button id="finish-murajaah" class="btn btn-success" style="display: none;">Selesai Murajaah</button>
+                        </div>
                     </div>
                 </div>
             </div>

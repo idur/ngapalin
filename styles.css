@@ -95,7 +95,7 @@ body {
 .app-container {
   max-width: 428px;
   margin: 0 auto;
-  background: var(--background);
+  background: #0f172a !important;
   min-height: 100vh;
   box-shadow: var(--shadow-xl);
   position: relative;
@@ -209,6 +209,8 @@ body {
 .main-content {
   padding: 1.5rem;
   min-height: calc(100vh - 200px);
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
 }
 
 .tab-content {
@@ -263,7 +265,7 @@ select:focus {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
-  padding: 1.5rem;
+  padding: 2rem;
   margin-top: 1.5rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -272,29 +274,69 @@ select:focus {
 .hafalan-header,
 .murajaah-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hafalan-header h3,
 .murajaah-header h3 {
   color: var(--text-primary);
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  margin: 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Tikrar Counter */
 .tikrar-counter {
   background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
   color: white;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: var(--radius-lg);
   text-align: center;
-  box-shadow: var(--shadow-md);
-  min-width: 140px;
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.tikrar-counter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.tikrar-counter #murajaah-mode {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.tikrar-counter #murajaah-count {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .counter-display {
@@ -358,39 +400,84 @@ select:focus {
 
 /* Ayah Display */
 .ayah-display {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 0 0 1rem 0;
-  margin-bottom: 1.5rem;
-  border: 1px solid var(--border);
-  min-height: 220px;
+  background: linear-gradient(135deg, var(--surface), rgba(255, 255, 255, 0.02));
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  gap: 1.5rem;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.ayah-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light), var(--accent-color));
 }
 
 .ayah-arabic {
   font-family: 'Amiri', serif;
-  font-size: 2.2rem;
-  line-height: 2.4;
+  font-size: 1.8rem;
+  line-height: 1;
   text-align: right;
   direction: rtl;
   color: var(--text-primary);
-  margin: 0 0 1rem 0;
-  padding: 1rem 0.5rem;
-  background: var(--background);
-  border-radius: var(--radius-md);
-  border-right: 3px solid var(--primary-color);
-  box-shadow: var(--shadow-sm);
+  margin: 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  white-space: pre-line;
+  word-spacing: 0.2em;
+  letter-spacing: 0.05em;
+}
+
+/* Styling for verse number markers */
+.ayah-arabic .verse-marker,
+.ayah-arabic .verse-number {
+  font-size: 1rem;
+  color: var(--text-primary);
 }
 
 .ayah-translation {
-  font-size: 1.2rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.7;
   color: var(--text-secondary);
   font-style: italic;
-  padding: 0.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--accent-color);
+  white-space: pre-line;
+  font-weight: 400;
+}
+
+/* Murajaah specific styling */
+#murajaah-translation {
+  font-size: 0.9rem;
+  display: none; /* Hidden by default */
+}
+
+.ayah-toggle-container {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.ayah-toggle-container .btn {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
 }
 
 .ayah-hidden {
@@ -403,6 +490,35 @@ select:focus {
   text-align: center;
   margin-top: 1rem;
   padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ayah-toggle-container .btn {
+  transition: all 0.3s ease;
+}
+
+.ayah-toggle-container .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Accordion style for translation button */
+#toggleMurajaahTranslationBtn {
+  position: relative;
+  overflow: hidden;
+}
+
+#toggleMurajaahTranslationBtn::after {
+  content: '▼';
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+#toggleMurajaahTranslationBtn.expanded::after {
+  transform: rotate(180deg);
 }
 
 .btn-sm {
@@ -412,7 +528,7 @@ select:focus {
 }
 
 /* Restart Options */
-.restart-options {
+.restart-options, .murajaah-restart-options {
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
@@ -537,9 +653,48 @@ select:focus {
 .hafalan-controls,
 .navigation-buttons {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 1rem;
+}
+
+.hafalan-controls .btn {
+  min-width: 140px;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.hafalan-controls .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.hafalan-controls .btn:hover::before {
+  left: 100%;
+}
+
+.hafalan-controls .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.hafalan-controls .btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .memorization-controls {
@@ -548,12 +703,158 @@ select:focus {
   gap: 1rem;
 }
 
+.murajaah-controls {
+  margin-top: 2rem;
+}
+
 /* Murajaah Options */
 .murajaah-options {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 1.5rem;
+}
+
+/* Murajaah Info */
+.murajaah-info {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.period-info {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.period-info::before {
+  content: "📅";
+  font-size: 1.2rem;
+}
+
+.ayah-count-info {
+  font-size: 1.1rem;
+  color: var(--primary-light);
+  font-weight: 700;
+  background: rgba(99, 102, 241, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  display: inline-block;
+}
+
+.surah-info-box {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.surah-info-content {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: normal;
+  line-height: 1.4;
+}
+
+/* Phase Progress Indicator */
+.phase-progress {
+  margin: 1rem 0;
+}
+
+.phase-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.phase-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 100px;
+  position: relative;
+}
+
+.phase-step.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  border-color: var(--primary-light);
+  color: white;
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+  transform: scale(1.05);
+}
+
+.phase-step.completed {
+  background: linear-gradient(135deg, var(--accent-color), #059669);
+  border-color: var(--accent-color);
+  color: white;
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+}
+
+.phase-step.completed::after {
+  content: '✓';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border: 2px solid white;
+}
+
+.phase-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.phase-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  opacity: 0.9;
+}
+
+.phase-count {
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.phase-connector {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  border-radius: 2px;
+  position: relative;
+}
+
+.phase-connector.active {
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
 }
 
 /* Progress Tab */
@@ -702,17 +1003,109 @@ select:focus {
 }
 
 /* Mobile-First Responsive Design */
-@media (max-width: 768px) {
-  .hafalan-header,
-  .murajaah-header {
+@media (max-width: 480px) {
+  .murajaah-container,
+  .hafalan-container {
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .murajaah-header h3,
+  .hafalan-header h3 {
+    font-size: 1.2rem;
+  }
+  
+  .murajaah-info {
+    padding: 1rem;
+  }
+  
+  .period-info {
+    font-size: 0.9rem;
     flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
+    gap: 0.25rem;
+  }
+  
+  .ayah-count-info {
+    font-size: 1rem;
   }
   
   .tikrar-counter {
+    padding: 1rem;
+  }
+  
+  .tikrar-counter #murajaah-count {
+    font-size: 1.5rem;
+  }
+  
+  .ayah-display {
+    padding: 0;
+    min-height: 250px;
+  }
+  
+  .ayah-arabic {
+    font-size: 1.4rem;
+    padding: 1rem;
+    line-height: 1;
+  }
+  
+  .ayah-translation {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+  
+  .hafalan-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .hafalan-controls .btn {
     width: 100%;
     min-width: unset;
+  }
+  
+  .phase-indicator {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .phase-connector {
+    width: 3px;
+    height: 30px;
+    transform: rotate(90deg);
+  }
+  
+  .phase-step {
+    min-width: 80px;
+    padding: 0.75rem;
+  }
+  
+  .phase-number {
+    font-size: 1.2rem;
+  }
+  
+  .phase-label {
+    font-size: 0.8rem;
+  }
+  
+  .phase-count {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hafalan-header,
+  .murajaah-header {
+    gap: 1.25rem;
+  }
+  
+  .ayah-arabic {
+    font-size: 1.6rem;
+    padding: 1.5rem;
+  }
+  
+  .ayah-translation {
+    font-size: 1.05rem;
+    padding: 1.25rem;
   }
 }
 
@@ -774,6 +1167,16 @@ select:focus {
   .app-container {
     max-width: 800px;
   }
+}
+
+/* Force dark theme - override system preferences */
+:root {
+  --text-primary: #f1f5f9 !important;
+  --text-secondary: #cbd5e1 !important;
+  --text-muted: #94a3b8 !important;
+  --background: #0f172a !important;
+  --surface: #1e293b !important;
+  --border: #334155 !important;
 }
 
 /* Dark mode support (for future implementation) */

@@ -12,6 +12,8 @@ class NgapalinApp {
         this.isFinishing = false; // Flag to prevent multiple execution
         this.ayahToggleVisible = false;
         this.isToggling = false;
+        this.murajaahAyahToggleVisible = false;
+        this.murajaahTranslationVisible = false;
         
         this.init();
     }
@@ -56,17 +58,26 @@ class NgapalinApp {
         });
 
         // Surah selection
-        document.getElementById('surah-select').addEventListener('change', (e) => {
-            this.onSurahSelect(e.target.value);
-        });
+        const surahSelect = document.getElementById('surah-select');
+        if (surahSelect) {
+            surahSelect.addEventListener('change', (e) => {
+                this.onSurahSelect(e.target.value);
+            });
+        }
 
         // Ayah selection
-        document.getElementById('ayah-select').addEventListener('change', (e) => {
-            this.onAyahSelect(e.target.value);
-        });
+        const ayahSelect = document.getElementById('ayah-select');
+        if (ayahSelect) {
+            ayahSelect.addEventListener('change', (e) => {
+                this.onAyahSelect(e.target.value);
+            });
+        }
 
         // Setup event listeners
-        document.getElementById('tikrarBtn')?.addEventListener('click', () => this.nextTikrar());
+        const tikrarBtn = document.getElementById('tikrarBtn');
+        if (tikrarBtn) {
+            tikrarBtn.addEventListener('click', () => this.nextTikrar());
+        }
 
         // Navigation buttons with event prevention
         const prevBtn = document.getElementById('prevAyahBtn');
@@ -87,38 +98,107 @@ class NgapalinApp {
                 this.nextAyah();
             });
         }
-        // hafalBtn removed - direct to restart options after tikrar completion
-        document.getElementById('toggleAyahBtn')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.toggleAyahVisibility();
-        });
+        
+        // Toggle ayah visibility
+        const toggleAyahBtn = document.getElementById('toggleAyahBtn');
+        if (toggleAyahBtn) {
+            toggleAyahBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleAyahVisibility();
+            });
+        }
         
         // Restart options
-        document.getElementById('restartFromBeginning')?.addEventListener('click', () => this.restartFromBeginning());
-        document.getElementById('restartFromSecondPhase')?.addEventListener('click', () => this.restartFromSecondPhase());
-        document.getElementById('confirmHafalBtn')?.addEventListener('click', () => this.confirmHafal());
+        const restartFromBeginningBtn = document.getElementById('restartFromBeginning');
+        if (restartFromBeginningBtn) {
+            restartFromBeginningBtn.addEventListener('click', () => this.restartFromBeginning());
+        }
+        
+        const restartFromSecondPhaseBtn = document.getElementById('restartFromSecondPhase');
+        if (restartFromSecondPhaseBtn) {
+            restartFromSecondPhaseBtn.addEventListener('click', () => this.restartFromSecondPhase());
+        }
+        
+        const confirmHafalBtn = document.getElementById('confirmHafalBtn');
+        if (confirmHafalBtn) {
+            confirmHafalBtn.addEventListener('click', () => this.confirmHafal());
+        }
+        
+        // Murajaah restart options
+        const murajaahRestartFromBeginningBtn = document.getElementById('murajaahRestartFromBeginning');
+        if (murajaahRestartFromBeginningBtn) {
+            murajaahRestartFromBeginningBtn.addEventListener('click', () => this.murajaahRestartFromBeginning());
+        }
+        
+        const murajaahRestartFromSecondPhaseBtn = document.getElementById('murajaahRestartFromSecondPhase');
+        if (murajaahRestartFromSecondPhaseBtn) {
+            murajaahRestartFromSecondPhaseBtn.addEventListener('click', () => this.murajaahRestartFromSecondPhase());
+        }
+        
+        const confirmMurajaahBtn = document.getElementById('confirmMurajaahBtn');
+        if (confirmMurajaahBtn) {
+            confirmMurajaahBtn.addEventListener('click', () => this.confirmMurajaah());
+        }
 
         // Murajaah controls
-        document.getElementById('daily-murajaah').addEventListener('click', () => {
-            this.startDailyMurajaah();
-        });
+        const dailyMurajaahBtn = document.getElementById('daily-murajaah');
+        if (dailyMurajaahBtn) {
+            dailyMurajaahBtn.addEventListener('click', () => {
+                this.startDailyMurajaah();
+            });
+        }
 
-        document.getElementById('weekly-murajaah').addEventListener('click', () => {
-            this.startWeeklyMurajaah();
-        });
+        const weeklyMurajaahBtn = document.getElementById('weekly-murajaah');
+        if (weeklyMurajaahBtn) {
+            weeklyMurajaahBtn.addEventListener('click', () => {
+                this.startWeeklyMurajaah();
+            });
+        }
 
-        document.getElementById('prev-murajaah').addEventListener('click', () => {
-            this.prevMurajaah();
-        });
+        const prevMurajaahBtn = document.getElementById('prev-murajaah');
+        if (prevMurajaahBtn) {
+            prevMurajaahBtn.addEventListener('click', () => {
+                this.prevMurajaah();
+            });
+        }
 
-        document.getElementById('next-murajaah').addEventListener('click', () => {
-            this.nextMurajaah();
-        });
+        const nextMurajaahBtn = document.getElementById('next-murajaah');
+        if (nextMurajaahBtn) {
+            nextMurajaahBtn.addEventListener('click', () => {
+                this.nextMurajaah();
+            });
+        }
 
-        document.getElementById('finish-murajaah').addEventListener('click', () => {
-            this.finishMurajaah();
-        });
+        const finishMurajaahBtn = document.getElementById('finish-murajaah');
+        if (finishMurajaahBtn) {
+            finishMurajaahBtn.addEventListener('click', () => {
+                this.finishMurajaah();
+            });
+        }
+
+        // Murajaah tikrar button
+        const murajaahTikrarBtn = document.getElementById('murajaah-tikrar-btn');
+        if (murajaahTikrarBtn) {
+            murajaahTikrarBtn.addEventListener('click', () => {
+                this.nextMurajaah();
+            });
+        }
+
+        // Murajaah toggle buttons
+        const toggleMurajaahAyahBtn = document.getElementById('toggleMurajaahAyahBtn');
+        if (toggleMurajaahAyahBtn) {
+            toggleMurajaahAyahBtn.addEventListener('click', () => {
+                this.toggleMurajaahAyah();
+            });
+        }
+
+        const toggleMurajaahTranslationBtn = document.getElementById('toggleMurajaahTranslationBtn');
+        if (toggleMurajaahTranslationBtn) {
+            toggleMurajaahTranslationBtn.addEventListener('click', () => {
+                this.toggleMurajaahTranslation();
+            });
+        }
     }
 
     showTab(tabName) {
@@ -126,13 +206,21 @@ class NgapalinApp {
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.classList.remove('active');
         });
-        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        
+        const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+        if (activeTab) {
+            activeTab.classList.add('active');
+        }
 
         // Show/hide tab content
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
-        document.getElementById(`${tabName}-tab`).classList.add('active');
+        
+        const tabContent = document.getElementById(`${tabName}-tab`);
+        if (tabContent) {
+            tabContent.classList.add('active');
+        }
 
         this.currentTab = tabName;
 
@@ -147,6 +235,8 @@ class NgapalinApp {
 
     loadSurahOptions() {
         const surahSelect = document.getElementById('surah-select');
+        if (!surahSelect) return;
+        
         const surahList = getSurahList();
         
         surahSelect.innerHTML = '<option value="">-- Pilih Surat --</option>';
@@ -164,28 +254,34 @@ class NgapalinApp {
         const ayahSelect = document.getElementById('ayah-select');
         
         if (!surahNumber) {
-            ayahSelector.style.display = 'none';
+            if (ayahSelector) {
+                ayahSelector.style.display = 'none';
+            }
             this.hideHafalanContainer();
             return;
         }
 
         // Load ayah options
-        const ayahList = getAyahList(parseInt(surahNumber));
-        ayahSelect.innerHTML = '<option value="">-- Pilih Ayat --</option>';
-        
-        ayahList.forEach(ayah => {
-            const option = document.createElement('option');
-            option.value = ayah.number;
-            const isMemorized = hafalanStorage.isAyahMemorized(surahNumber, ayah.number);
-            option.textContent = `Ayat ${ayah.number}${isMemorized ? ' ✓' : ''}`;
-            if (isMemorized) {
-                option.style.color = '#28a745';
-                option.style.fontWeight = 'bold';
-            }
-            ayahSelect.appendChild(option);
-        });
+        if (ayahSelect) {
+            const ayahList = getAyahList(parseInt(surahNumber));
+            ayahSelect.innerHTML = '<option value="">-- Pilih Ayat --</option>';
+            
+            ayahList.forEach(ayah => {
+                const option = document.createElement('option');
+                option.value = ayah.number;
+                const isMemorized = hafalanStorage.isAyahMemorized(surahNumber, ayah.number);
+                option.textContent = `Ayat ${ayah.number}${isMemorized ? ' ✓' : ''}`;
+                if (isMemorized) {
+                    option.style.color = '#28a745';
+                    option.style.fontWeight = 'bold';
+                }
+                ayahSelect.appendChild(option);
+            });
+        }
 
-        ayahSelector.style.display = 'block';
+        if (ayahSelector) {
+            ayahSelector.style.display = 'block';
+        }
         this.hideHafalanContainer();
     }
 
@@ -240,11 +336,17 @@ class NgapalinApp {
     }
 
     showHafalanContainer() {
-        document.querySelector('.hafalan-container').style.display = 'block';
+        const container = document.querySelector('.hafalan-container');
+        if (container) {
+            container.style.display = 'block';
+        }
     }
 
     hideHafalanContainer() {
-        document.querySelector('.hafalan-container').style.display = 'none';
+        const container = document.querySelector('.hafalan-container');
+        if (container) {
+            container.style.display = 'none';
+        }
     }
 
     updateHafalanDisplay() {
@@ -271,7 +373,9 @@ class NgapalinApp {
         const arabicElement = document.getElementById('ayah-arabic');
         const translationElement = document.getElementById('ayah-translation');
         
-        arabicElement.textContent = ayahData.arabic;
+        // Add verse number marker at the end of Arabic text
+        const verseMarker = this.getVerseNumberMarker(ayahNumber);
+        arabicElement.innerHTML = ayahData.arabic + ' <span class="verse-marker">' + verseMarker + '</span>';
         translationElement.textContent = ayahData.translation;
         
         // Hide/show ayah based on mode
@@ -466,12 +570,16 @@ class NgapalinApp {
             const surahSelect = document.getElementById('surah-select');
             const ayahSelect = document.getElementById('ayah-select');
             
-            surahSelect.value = surahNumber;
-            this.onSurahSelect(surahNumber);
+            if (surahSelect) {
+                surahSelect.value = surahNumber;
+                this.onSurahSelect(surahNumber);
+            }
             
             // Wait for ayah options to load, then set ayah value
             setTimeout(() => {
-                ayahSelect.value = ayahNumber;
+                if (ayahSelect) {
+                    ayahSelect.value = ayahNumber;
+                }
                 
                 // Start hafalan with saved state
                 const surahData = getSurahData(surahNumber);
@@ -520,7 +628,23 @@ class NgapalinApp {
     }
 
     startDailyMurajaah() {
-        const dailyAyahs = hafalanStorage.getDailyReviewAyahs();
+        let dailyAyahs = hafalanStorage.getDailyReviewAyahs();
+        
+        // Add test data if no ayahs available
+        if (dailyAyahs.length === 0) {
+            console.log('No daily ayahs found, adding test data');
+            // Add some test ayahs for testing
+            const testAyahs = [
+                { surahNumber: 114, ayahNumber: 1, dateMemorized: new Date(Date.now() - 24*60*60*1000).toISOString(), tikrarCount: 0 },
+                { surahNumber: 114, ayahNumber: 2, dateMemorized: new Date(Date.now() - 24*60*60*1000).toISOString(), tikrarCount: 0 }
+            ];
+            
+            testAyahs.forEach(ayah => {
+                hafalanStorage.addMemorizedAyah(ayah.surahNumber, ayah.ayahNumber);
+            });
+            
+            dailyAyahs = hafalanStorage.getDailyReviewAyahs();
+        }
         
         if (dailyAyahs.length === 0) {
             alert('Tidak ada ayat untuk murajaah harian. Silakan hafal ayat baru terlebih dahulu.');
@@ -556,12 +680,20 @@ class NgapalinApp {
     startMurajaahSession() {
         if (!this.currentMurajaah) return;
         
-        // Reset tikrar state untuk murajaah
+        // Reset tikrar state untuk murajaah - semua ayat sekaligus
         this.tikrarState = {
             current: 1,
             total: 20,
-            mode: 'melihat'
+            mode: 'melihat',
+            phase: 1 // Phase 1: 20x melihat, Phase 2: 10x tanpa melihat
         };
+        
+        // Reset toggle states
+        this.murajaahAyahToggleVisible = false;
+        this.murajaahTranslationVisible = false;
+        
+        // Hide restart options and show navigation buttons
+        this.hideMurajaahRestartOptions();
         
         document.querySelector('.murajaah-container').style.display = 'block';
         document.querySelector('.murajaah-options').style.display = 'none';
@@ -572,85 +704,112 @@ class NgapalinApp {
     updateMurajaahDisplay() {
         if (!this.currentMurajaah) return;
         
-        const currentAyah = this.currentMurajaah.ayahs[this.currentMurajaah.currentIndex];
-        const surahData = getSurahData(currentAyah.surahNumber);
-        const ayahData = getAyahData(currentAyah.surahNumber, currentAyah.ayahNumber);
-        
-        // Update header
-        const typeText = this.currentMurajaah.type === 'daily' ? 'Murajaah Harian' : 'Murajaah Mingguan';
-        document.getElementById('murajaah-title').textContent = 
-            `${typeText} - ${surahData.name} Ayat ${currentAyah.ayahNumber} (${this.currentMurajaah.currentIndex + 1}/${this.currentMurajaah.ayahs.length})`;
+        // Update period and ayah count info
+        const periodText = this.currentMurajaah.type === 'daily' ? 
+            'Ayat yang dihafal kemarin' : 'Ayat yang dihafal minggu ini (Ahad-Sabtu)';
+        document.getElementById('murajaah-period').textContent = periodText;
+        document.getElementById('murajaah-ayah-count').textContent = 
+            `Total: ${this.currentMurajaah.ayahs.length} ayat untuk dimurajaah`;
         
         // Update tikrar counter
-        const modeText = this.tikrarState.mode === 'melihat' ? 'Membaca dengan Melihat' : 'Membaca Tanpa Melihat';
+        const modeText = this.tikrarState.mode === 'melihat' ? 'Membaca dengan melihat' : 'Membaca tanpa melihat';
         document.getElementById('murajaah-mode').textContent = modeText;
-        document.getElementById('murajaah-count').textContent = `${this.tikrarState.current}/${this.tikrarState.total}`;
+        document.getElementById('murajaah-count').textContent = this.tikrarState.current;
+        document.getElementById('murajaah-target').textContent = this.tikrarState.total;
         
-        // Update ayah display
+        // Update ayah display - tampilkan semua ayat
         const arabicElement = document.getElementById('murajaah-arabic');
         const translationElement = document.getElementById('murajaah-translation');
         
-        arabicElement.textContent = ayahData.arabic;
-        translationElement.textContent = ayahData.translation;
+        let arabicText = '';
+        let translationText = '';
         
-        // Hide/show ayah based on mode
+        this.currentMurajaah.ayahs.forEach((ayah, index) => {
+            const surahData = getSurahData(ayah.surahNumber);
+            const ayahData = getAyahData(ayah.surahNumber, ayah.ayahNumber);
+            
+            // Add verse number marker at the end of Arabic text
+            const verseMarker = this.getVerseNumberMarker(ayah.ayahNumber);
+            arabicText += `${ayahData.arabic} <span class="verse-marker">${verseMarker}</span>\n\n`;
+            
+            // Add verse number to translation (Latin format at the beginning)
+            translationText += `(${ayah.ayahNumber}) ${ayahData.translation}\n\n`;
+        });
+        
+        arabicElement.innerHTML = arabicText;
+        translationElement.innerHTML = translationText;
+        
+        // Update surah info box
+        this.updateSurahInfoBox();
+        
+        // Show/hide toggle buttons based on mode
+        const toggleContainer = document.getElementById('murajaah-toggle-container');
+        const toggleAyahBtn = document.getElementById('toggleMurajaahAyahBtn');
+        const toggleTranslationBtn = document.getElementById('toggleMurajaahTranslationBtn');
+        
+        // Handle ayah visibility based on mode (similar to hafalan)
         if (this.tikrarState.mode === 'tanpa_melihat') {
-            arabicElement.classList.add('ayah-hidden');
-            translationElement.classList.add('ayah-hidden');
+            if (!this.murajaahAyahToggleVisible) {
+                arabicElement.classList.add('ayah-hidden');
+            } else {
+                arabicElement.classList.remove('ayah-hidden');
+            }
+            toggleAyahBtn.style.display = 'inline-block';
+            this.updateMurajaahToggleButton();
         } else {
             arabicElement.classList.remove('ayah-hidden');
-            translationElement.classList.remove('ayah-hidden');
+            toggleAyahBtn.style.display = 'none';
         }
         
+        // Always show translation (no toggle functionality)
+        translationElement.style.display = 'block';
+        translationElement.classList.remove('ayah-hidden');
+        
+        // Make sure toggle container is visible
+        toggleContainer.style.display = 'block';
+        
+        // Hide translation toggle button since translation is always visible
+        toggleTranslationBtn.style.display = 'none';
+        
         // Update button states
-        const isFirstTikrar = this.tikrarState.current === 1 && this.tikrarState.mode === 'melihat' && this.currentMurajaah.currentIndex === 0;
+        const isFirstTikrar = this.tikrarState.current === 1 && this.tikrarState.phase === 1;
         document.getElementById('prev-murajaah').disabled = isFirstTikrar;
         
-        const isLastTikrar = this.tikrarState.current === this.tikrarState.total && 
-                            this.tikrarState.mode === 'tanpa_melihat' && 
-                            this.currentMurajaah.currentIndex === this.currentMurajaah.ayahs.length - 1;
+        const isLastTikrar = this.tikrarState.current === this.tikrarState.total && this.tikrarState.phase === 2;
         
         document.getElementById('next-murajaah').style.display = isLastTikrar ? 'none' : 'inline-block';
         document.getElementById('finish-murajaah').style.display = isLastTikrar ? 'inline-block' : 'none';
     }
+    
+
 
     prevMurajaah() {
-        if (this.tikrarState.mode === 'tanpa_melihat' && this.tikrarState.current === 1) {
-            // Kembali ke mode melihat, tikrar terakhir
+        if (this.tikrarState.phase === 2 && this.tikrarState.current === 1) {
+            // Kembali ke phase 1 (melihat), tikrar terakhir
+            this.tikrarState.phase = 1;
             this.tikrarState.mode = 'melihat';
             this.tikrarState.current = 20;
             this.tikrarState.total = 20;
         } else if (this.tikrarState.current > 1) {
             this.tikrarState.current--;
-        } else if (this.currentMurajaah.currentIndex > 0) {
-            // Pindah ke ayat sebelumnya
-            this.currentMurajaah.currentIndex--;
-            this.tikrarState = {
-                current: 10,
-                total: 10,
-                mode: 'tanpa_melihat'
-            };
         }
         
         this.updateMurajaahDisplay();
     }
 
     nextMurajaah() {
-        if (this.tikrarState.mode === 'melihat' && this.tikrarState.current === 20) {
-            // Pindah ke mode tanpa melihat
+        if (this.tikrarState.phase === 1 && this.tikrarState.current === 20) {
+            // Pindah ke phase 2 (tanpa melihat)
+            this.tikrarState.phase = 2;
             this.tikrarState.mode = 'tanpa_melihat';
             this.tikrarState.current = 1;
             this.tikrarState.total = 10;
         } else if (this.tikrarState.current < this.tikrarState.total) {
             this.tikrarState.current++;
-        } else if (this.currentMurajaah.currentIndex < this.currentMurajaah.ayahs.length - 1) {
-            // Pindah ke ayat berikutnya
-            this.currentMurajaah.currentIndex++;
-            this.tikrarState = {
-                current: 1,
-                total: 20,
-                mode: 'melihat'
-            };
+        } else if (this.tikrarState.phase === 2 && this.tikrarState.current === 10) {
+            // Selesai fase kedua, tampilkan opsi restart
+            this.showMurajaahRestartOptions();
+            return;
         }
         
         this.updateMurajaahDisplay();
@@ -673,8 +832,16 @@ class NgapalinApp {
     }
 
     resetMurajaah() {
-        document.querySelector('.murajaah-container').style.display = 'none';
-        document.querySelector('.murajaah-options').style.display = 'flex';
+        const murajaahContainer = document.querySelector('.murajaah-container');
+        if (murajaahContainer) {
+            murajaahContainer.style.display = 'none';
+        }
+        
+        const murajaahOptions = document.querySelector('.murajaah-options');
+        if (murajaahOptions) {
+            murajaahOptions.style.display = 'flex';
+        }
+        
         this.currentMurajaah = null;
     }
 
@@ -683,34 +850,46 @@ class NgapalinApp {
         const memorizedAyahs = hafalanStorage.getMemorizedAyahs();
         
         // Update statistics
-        document.getElementById('total-memorized').textContent = stats.totalMemorized;
-        document.getElementById('current-streak').textContent = stats.dailyStreak;
-        document.getElementById('total-tikrar').textContent = stats.totalTikrar;
+        const totalMemorized = document.getElementById('total-memorized');
+        if (totalMemorized) {
+            totalMemorized.textContent = stats.totalMemorized;
+        }
+        
+        const currentStreak = document.getElementById('current-streak');
+        if (currentStreak) {
+            currentStreak.textContent = stats.dailyStreak;
+        }
+        
+        const totalTikrar = document.getElementById('total-tikrar');
+        if (totalTikrar) {
+            totalTikrar.textContent = stats.totalTikrar;
+        }
         
         // Update memorized list
         const memorizedList = document.getElementById('memorized-list');
-        
-        if (memorizedAyahs.length === 0) {
-            memorizedList.innerHTML = '<div class="empty-state"><h4>Belum ada ayat yang dihafal</h4><p>Mulai hafalan pertama Anda di tab Hafalan</p></div>';
-        } else {
-            memorizedList.innerHTML = '';
-            
-            memorizedAyahs.forEach(ayah => {
-                const surahData = getSurahData(ayah.surahNumber);
-                const memorizedDate = new Date(ayah.dateMemorized).toLocaleDateString('id-ID');
+        if (memorizedList) {
+            if (memorizedAyahs.length === 0) {
+                memorizedList.innerHTML = '<div class="empty-state"><h4>Belum ada ayat yang dihafal</h4><p>Mulai hafalan pertama Anda di tab Hafalan</p></div>';
+            } else {
+                memorizedList.innerHTML = '';
                 
-                const item = document.createElement('div');
-                item.className = 'memorized-item';
-                item.innerHTML = `
-                    <div>
-                        <strong>${surahData.name} - Ayat ${ayah.ayahNumber}</strong>
-                        <div class="memorized-date">Dihafal: ${memorizedDate}</div>
-                    </div>
-                    <div class="memorized-date">${ayah.tikrarCount} tikrar</div>
-                `;
-                
-                memorizedList.appendChild(item);
-            });
+                memorizedAyahs.forEach(ayah => {
+                    const surahData = getSurahData(ayah.surahNumber);
+                    const memorizedDate = new Date(ayah.dateMemorized).toLocaleDateString('id-ID');
+                    
+                    const item = document.createElement('div');
+                    item.className = 'memorized-item';
+                    item.innerHTML = `
+                        <div>
+                            <strong>${surahData.name} - Ayat ${ayah.ayahNumber}</strong>
+                            <div class="memorized-date">Dihafal: ${memorizedDate}</div>
+                        </div>
+                        <div class="memorized-date">${ayah.tikrarCount} tikrar</div>
+                    `;
+                    
+                    memorizedList.appendChild(item);
+                });
+            }
         }
     }
 
@@ -743,6 +922,63 @@ class NgapalinApp {
         }
     }
 
+    getVerseNumberMarker(ayahNumber) {
+        // Convert ayah number to Arabic-Indic digits with decorative circle
+        const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        const ayahStr = ayahNumber.toString();
+        let arabicAyahNumber = '';
+        
+        for (let digit of ayahStr) {
+            arabicAyahNumber += arabicNumbers[parseInt(digit)];
+        }
+        
+        // Return the ayah number with decorative markers
+        return `﴿${arabicAyahNumber}﴾`;
+    }
+
+    updateSurahInfoBox() {
+        if (!this.currentMurajaah || !this.currentMurajaah.ayahs.length) return;
+        
+        const surahInfoBox = document.getElementById('surah-info-box');
+        const surahInfoContent = document.getElementById('surah-info-content');
+        
+        // Group ayahs by surah
+        const surahGroups = {};
+        this.currentMurajaah.ayahs.forEach(ayah => {
+            if (!surahGroups[ayah.surahNumber]) {
+                surahGroups[ayah.surahNumber] = [];
+            }
+            surahGroups[ayah.surahNumber].push(ayah.ayahNumber);
+        });
+        
+        // Create surah info text
+        let surahInfoText = '';
+        Object.keys(surahGroups).forEach((surahNumber, index) => {
+            const surahData = getSurahData(parseInt(surahNumber));
+            const ayahNumbers = surahGroups[surahNumber].sort((a, b) => a - b);
+            
+            if (index > 0) surahInfoText += ', ';
+            
+            if (ayahNumbers.length === 1) {
+                surahInfoText += `${surahData.name} ayat ${ayahNumbers[0]}`;
+            } else {
+                // Check if ayahs are consecutive for range display
+                const isConsecutive = ayahNumbers.every((num, i) => 
+                    i === 0 || num === ayahNumbers[i - 1] + 1
+                );
+                
+                if (isConsecutive && ayahNumbers.length > 2) {
+                    surahInfoText += `${surahData.name} ayat ${ayahNumbers[0]}-${ayahNumbers[ayahNumbers.length - 1]}`;
+                } else {
+                    surahInfoText += `${surahData.name} ayat ${ayahNumbers.join(', ')}`;
+                }
+            }
+        });
+        
+        surahInfoContent.textContent = surahInfoText;
+        surahInfoBox.style.display = 'block';
+    }
+
     restartFromBeginning() {
         // Reset tikrar state to beginning (20x dengan melihat)
         this.tikrarState = {
@@ -773,6 +1009,174 @@ class NgapalinApp {
         
         // Save current state
         this.saveCurrentState();
+    }
+
+    toggleMurajaahAyah() {
+        // Prevent multiple rapid calls
+        if (this.isToggling) {
+            return;
+        }
+        
+        this.isToggling = true;
+        this.murajaahAyahToggleVisible = !this.murajaahAyahToggleVisible;
+        this.updateMurajaahDisplay();
+        
+        // Reset flag after a short delay
+        setTimeout(() => {
+            this.isToggling = false;
+        }, 100);
+    }
+
+    toggleMurajaahTranslation() {
+        this.murajaahTranslationVisible = !this.murajaahTranslationVisible;
+        this.updateMurajaahDisplay();
+    }
+
+    updateMurajaahToggleButton() {
+        const toggleBtn = document.getElementById('toggleMurajaahAyahBtn');
+        if (this.murajaahAyahToggleVisible) {
+            toggleBtn.textContent = '🙈 Sembunyikan Ayat';
+            toggleBtn.classList.remove('btn-outline');
+            toggleBtn.classList.add('btn-secondary');
+        } else {
+            toggleBtn.textContent = '👁️ Lihat Ayat';
+            toggleBtn.classList.remove('btn-secondary');
+            toggleBtn.classList.add('btn-outline');
+        }
+    }
+    
+    showMurajaahRestartOptions() {
+        // Hide navigation buttons and show restart options
+        const navButtons = document.querySelector('.navigation-buttons');
+        if (navButtons) {
+            navButtons.style.display = 'none';
+        }
+        
+        const restartOptions = document.getElementById('murajaah-restart-options');
+        if (restartOptions) {
+            restartOptions.style.display = 'block';
+        }
+    }
+    
+    hideMurajaahRestartOptions() {
+        // Show navigation buttons and hide restart options
+        const navButtons = document.querySelector('.navigation-buttons');
+        if (navButtons) {
+            navButtons.style.display = 'flex';
+        }
+        
+        const restartOptions = document.getElementById('murajaah-restart-options');
+        if (restartOptions) {
+            restartOptions.style.display = 'none';
+        }
+    }
+    
+    murajaahRestartFromBeginning() {
+        // Reset tikrar ke awal (fase 1)
+        this.tikrarState = {
+            current: 1,
+            total: 20,
+            mode: 'melihat',
+            phase: 1
+        };
+        
+        this.hideMurajaahRestartOptions();
+        this.updateMurajaahDisplay();
+    }
+    
+    murajaahRestartFromSecondPhase() {
+        // Reset tikrar ke fase 2
+        this.tikrarState = {
+            current: 1,
+            total: 10,
+            mode: 'tanpa_melihat',
+            phase: 2
+        };
+        
+        this.hideMurajaahRestartOptions();
+        this.updateMurajaahDisplay();
+    }
+    
+    confirmMurajaah() {
+        if (!this.currentMurajaah) return;
+        
+        // Update tikrar count untuk semua ayat yang dimurajaah
+        hafalanStorage.updateMurajaahTikrar(this.currentMurajaah.ayahs, 30);
+        
+        const typeText = this.currentMurajaah.type === 'daily' ? 'harian' : 'mingguan';
+        alert(`Alhamdulillah! Murajaah ${typeText} telah selesai. Total ${this.currentMurajaah.ayahs.length} ayat telah dimurajaah dengan sempurna.`);
+        
+        // Reset murajaah
+        this.resetMurajaah();
+        
+        // Update progress display
+        this.updateProgressDisplay();
+    }
+    
+    updateUI() {
+        // Update surah and ayah selectors
+        const surahSelect = document.getElementById('surah-select');
+        if (surahSelect) {
+            surahSelect.value = this.currentSurah;
+        }
+        
+        const ayahSelect = document.getElementById('ayah-select');
+        if (ayahSelect) {
+            ayahSelect.value = this.currentAyah;
+        }
+        
+        // Update ayah display
+        const ayahData = this.getAyahData(this.currentSurah, this.currentAyah);
+        if (ayahData) {
+            const ayahText = document.getElementById('ayah-text');
+            if (ayahText) {
+                ayahText.textContent = ayahData.arabic;
+            }
+            
+            const ayahTranslation = document.getElementById('ayah-translation');
+            if (ayahTranslation) {
+                ayahTranslation.textContent = ayahData.translation;
+            }
+        }
+        
+        // Update tikrar info
+        const tikrarCount = document.getElementById('tikrar-count');
+        if (tikrarCount) {
+            tikrarCount.textContent = this.tikrarCount;
+        }
+        
+        const tikrarMode = document.getElementById('tikrar-mode');
+        if (tikrarMode) {
+            tikrarMode.textContent = this.mode === 'melihat' ? 'Melihat' : 'Tanpa Melihat';
+        }
+        
+        // Update button states
+        this.updateButtonStates();
+    }
+
+    updateButtonStates() {
+        const prevBtn = document.getElementById('prev-tikrar');
+        if (prevBtn) {
+            prevBtn.disabled = this.tikrarCount <= 1;
+        }
+        
+        const nextBtn = document.getElementById('next-tikrar');
+        if (nextBtn) {
+            nextBtn.disabled = false;
+        }
+        
+        const prevAyahBtn = document.getElementById('prev-ayah');
+        const nextAyahBtn = document.getElementById('next-ayah');
+        const confirmBtn = document.getElementById('confirm-hafal');
+        
+        // Show/hide confirm button based on completion
+        if (confirmBtn) {
+            if (this.mode === 'tanpa_melihat' && this.tikrarCount >= 10) {
+                confirmBtn.style.display = 'inline-block';
+            } else {
+                confirmBtn.style.display = 'none';
+            }
+        }
     }
 }
 
