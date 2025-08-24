@@ -724,17 +724,21 @@ select:focus {
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .period-info {
   font-size: 1rem;
   color: var(--text-primary);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .period-info::before {
@@ -747,9 +751,11 @@ select:focus {
   color: var(--primary-light);
   font-weight: 700;
   background: rgba(99, 102, 241, 0.1);
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.25rem;
   border-radius: var(--radius-md);
   display: inline-block;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
 }
 
 .surah-info-box {
@@ -1142,8 +1148,34 @@ select:focus {
   
   .hafalan-header,
   .murajaah-header {
-    flex-direction: row;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+  }
+  
+  .murajaah-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .murajaah-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
     align-items: center;
+    text-align: left;
+    padding: 1.5rem;
+  }
+  
+  .period-info {
+    justify-content: flex-start;
+    margin-bottom: 0;
+  }
+  
+  .ayah-count-info {
+    justify-self: end;
+    text-align: center;
   }
   
   .navigation-buttons {
@@ -1165,7 +1197,46 @@ select:focus {
 
 @media (min-width: 1024px) {
   .app-container {
-    max-width: 800px;
+    max-width: 900px;
+  }
+  
+  .murajaah-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  
+  .murajaah-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .tikrar-counter {
+    align-self: start;
+  }
+  
+  .ayah-display {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2.5rem;
+  }
+  
+  .ayah-arabic {
+    font-size: 2.2rem;
+    line-height: 1.8;
+    text-align: center;
+  }
+  
+  .ayah-translation {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 80%;
+    margin: 0 auto;
   }
 }
 
