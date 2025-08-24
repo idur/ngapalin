@@ -20,18 +20,28 @@ class NgapalinApp {
 
     removeEventListeners() {
         // Clone and replace elements to remove all event listeners
-        const prevBtn = document.getElementById('prevAyahBtn');
-        const nextBtn = document.getElementById('nextAyahBtn');
+        const elementsToClean = [
+            'prevAyahBtn',
+            'nextAyahBtn', 
+            'tikrarBtn',
+            'murajaah-tikrar-btn',
+            'toggleAyahBtn',
+            'toggleMurajaahAyahBtn',
+            'toggleMurajaahTranslationBtn',
+            'confirm-hafal',
+            'restart-beginning',
+            'restart-second-phase',
+            'next-murajaah',
+            'finish-murajaah'
+        ];
         
-        if (prevBtn) {
-            const newPrevBtn = prevBtn.cloneNode(true);
-            prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
-        }
-        
-        if (nextBtn) {
-            const newNextBtn = nextBtn.cloneNode(true);
-            nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
-        }
+        elementsToClean.forEach(elementId => {
+            const element = document.getElementById(elementId);
+            if (element && element.parentNode) {
+                const newElement = element.cloneNode(true);
+                element.parentNode.replaceChild(newElement, element);
+            }
+        });
     }
 
     init() {
